@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>testing drag in svg</title>
+    <style>
+        body {
+            background-color: #d5e7e8;
+        }
+
+        #dropzone {
+            width: 500px;
+            height: 500px;
+            border-radius: 8px;
+            background-color: #FF9933;
+        }
+
+        #a_real_drag {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: beige;
+        }
+
+        #second_drag {
+            position: absolute;
+            left: 458px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ffc6c1;
+        }
+
+        #a_real_drag,
+        #second_drag:hover {
+            cursor: pointer;
+        }
+
+        p {
+            position: absolute;
+            top: 100px;
+            left: 516px;
+            margin: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Drag us around !</h1>
+    <div id="dropzone" onload="dragAndDrop(event)">
+        <div id="a_real_drag"></div>
+        <div id="second_drag"></div>
+    </div>
+    <p id="mouse_coord"></p>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        var zone = document.getElementById('dropzone');
+        var zoneArea = zone.getBoundingClientRect();
+        var dropee = document.getElementById('a_real_drag');
+        var sndDrop = document.getElementById('second_drag');
+        var dropList = [dropee, sndDrop];
+        var mouseCoord = document.getElementById('mouse_coord');
+
+        function mouseCo(event, zone) {
+            var x = event.clientX - zone.left;
+            var y = event.clientY - zone.top;
+            y = Math.round(y);
+            if (zone === zoneArea) {
+                mouseCoord.innerHTML = 'coordinates X : ' + x + ' Y : ' + y;
+            } else {
+                return [x, y];
+            }
+        }
+
+        zone.addEventListener('mousemove', function(event) {
+            mouseCo(event, zoneArea);
+        });
+
+        $(function() {
+            $('#a_real_drag, #second_drag').draggable({
+                containment: 'parent'
+            });
+        });
+
+    </script>
+</body>
+
+</html>
